@@ -46,9 +46,10 @@ resource "azurerm_linux_virtual_machine" "weather_vm" {
   name                  = "weather-vm"
   location              = azurerm_resource_group.rg.location
   resource_group_name   = azurerm_resource_group.rg.name
-  network_interface_ids = [azurerm_network_interface.my_terraform_nic.id, azurerm_network_interface.weather_nic.id]
+  network_interface_ids = [azurerm_network_interface.weather_nic.id]
   size                  = "Standard_B1s"
   admin_password = random_password.password.result
+  custom_data = filebase64("customdata.tpl")
 
   os_disk {
     name                 = "weatherOsDisk"
@@ -75,9 +76,6 @@ resource "azurerm_linux_virtual_machine" "weather_vm" {
     storage_account_uri = azurerm_storage_account.my_storage_account.primary_blob_endpoint
   }
 }
-
-
-
 
 # Install IIS web server to the virtual machine
 resource "azurerm_virtual_machine_extension" "web_server_install" {
