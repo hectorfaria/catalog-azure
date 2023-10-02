@@ -11,6 +11,7 @@ output "admin_password" {
   value     = azurerm_windows_virtual_machine.main.admin_password
 }
 
-output "key_data" {
-  value = jsondecode(azapi_resource_action.ssh_public_key_gen.output).publicKey
+output "pass" {
+  sensitive = true
+  value = random_password.password.result
 }
